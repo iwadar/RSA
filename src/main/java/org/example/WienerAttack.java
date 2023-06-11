@@ -8,7 +8,7 @@ public class WienerAttack {
     static int d = 0;
     static int guessD;
 
-    public static int[] continuousFraction(BigInteger N, BigInteger e) {   //this function find the continuous fraction of the numbers given
+    public static int[] continuousFraction(BigInteger N, BigInteger e) {
         int[] a= new int[1000];
         a[0] = 0;
         BigInteger temp;
@@ -30,7 +30,7 @@ public class WienerAttack {
         return a_;
     }
 
-    public static int[][] k_d(int[] a) {          //this function finds the convergents of the pinax a -the continuous fraction
+    public static int[][] k_d(int[] a) {
         int[][] kd = new int[a.length][2];
         kd[1][0] = 1;
         kd[1][1] = a[1];
@@ -49,12 +49,11 @@ public class WienerAttack {
         return kd;
     }
 
-    public static BigInteger f(BigInteger e, int k, int d){              //in this part we calculate the f function
+    public static BigInteger f(BigInteger e, int k, int d){
         return (e.multiply(BigInteger.valueOf(d)).subtract(BigInteger.valueOf(1))).divide(BigInteger.valueOf(k));
     }
 
-    public static boolean eq(BigInteger N, BigInteger f){   // this functions finds the solution to the equation we need to solve in order to get the p, q
-
+    public static boolean eq(BigInteger N, BigInteger f){
         BigInteger x1;
         BigInteger x2;
         BigInteger D;
@@ -75,7 +74,7 @@ public class WienerAttack {
         return x1.multiply(x2).equals(N);
     }
 
-    public static boolean checkEffectiveness(BigInteger N, int d){     //in this final part, we check whether the number "d" is efficient enough or not
+    public static boolean checkEffectiveness(BigInteger N, int d){
         return N.pow(1 / 4).divide(BigInteger.valueOf(3)).compareTo(BigInteger.valueOf(d)) < 0;
     }
 
