@@ -1,7 +1,6 @@
 package org.example;
 
 import java.math.BigInteger;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class RSA {
@@ -10,11 +9,13 @@ public class RSA {
         this.key = key;
     }
 
+    void setKey(RSAKey key) {
+        this.key = key;
+    }
     public byte[] encrypt(byte[] data) {
         byte[] copy = new byte[data.length + 1];
         copy[0] = 127;
         System.arraycopy(data, 0, copy, 1, data.length);
-
         BigInteger m = new BigInteger(copy);
         BigInteger x = m.modPow(key.e, key.n);
         return x.toByteArray();

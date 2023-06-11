@@ -1,17 +1,20 @@
 package org.example;
 
+import org.example.primaryTest.*;
+
 import java.math.BigInteger;
 import java.util.Random;
 
 public class RSAKey {
     final double REQUIRED_PRECISION = 0.95;
+    final int WIENER_CRITERIA = 256;
     IPrimaryTest usedTest;
     double precision;
     int bitLength;
 
     BigInteger n;
     BigInteger e;
-    BigInteger d;
+    BigInteger d;// = BigInteger.ZERO;
 
     RSAKey(PrimaryTest nameTest, double precision, int bitLength) {
         if (nameTest == PrimaryTest.Ferma) {
@@ -29,18 +32,31 @@ public class RSAKey {
         Random random = new Random(System.currentTimeMillis());
         BigInteger p;
         BigInteger q;
-        do {
-            p = new BigInteger(bitLength, random);
-        } while (!usedTest.test(p, REQUIRED_PRECISION) || p.bitLength() != bitLength);
-        do {
-            q = new BigInteger(bitLength, random);
-        } while (!usedTest.test(q, REQUIRED_PRECISION) || q.bitLength() != bitLength);
+        this.d = BigInteger.ZERO;
 
-        this.n = p.multiply(q);
+//        чтобы прошла атака Винера надо раскомментить нижеследующий блок
 
-        BigInteger phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
-        this.e = BigInteger.valueOf(65537L);
-        this.d = solve(phi, e);
+//        p = new BigInteger("239");
+//        q = new BigInteger("379");
+//        this.n = p.multiply(q);
+//        BigInteger phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
+//        this.e = BigInteger.valueOf(17993L);
+//        this.d = solve(phi, e);
+
+
+        // комментить для прохождения атаки
+        while (d.bitLength() < WIENER_CRITERIA) {
+            do {
+                p = new BigInteger(bitLength / 2, random);
+            } while (!usedTest.test(p, REQUIRED_PRECISION) || p.bitLength() != bitLength / 2);
+            do {
+                q = new BigInteger(bitLength / 2, random);
+            } while (!usedTest.test(q, REQUIRED_PRECISION) || q.bitLength() != bitLength / 2);
+            this.n = p.multiply(q);
+            BigInteger phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
+            this.e = BigInteger.valueOf(65537L);
+            this.d = solve(phi, e);
+        }
     }
 
     private static BigInteger solve(BigInteger a, BigInteger b)

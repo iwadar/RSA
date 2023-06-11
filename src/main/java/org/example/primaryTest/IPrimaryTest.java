@@ -1,4 +1,4 @@
-package org.example;
+package org.example.primaryTest;
 
 import java.math.BigInteger;
 import java.util.Random;
